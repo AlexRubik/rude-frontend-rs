@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-transparent: 'transparent';
+  --color-white: #FAFAFA;
+  --color-black: #0F0E11;
+  --color-base-bg: #0F0E11;
+  --color-base-canvas: #0C0C0E;
+  --color-elements-highEmphasis: #FAFAFA;
+  --color-elements-midEmphasis: #D1D1D1;
+  --color-elements-lowEmphasis: #707070;
+  --color-elements-disabled: #585661;
+  --color-elements-green: #49B759;
+  --color-elements-red: #B92F19;
+  --color-surface-elevated: #131216;
+  --color-surface-elevatedHover: #151419;
+  --color-controls-primary: #F5F5F5;
+  --color-controls-primaryHover: #FAFAFA;
+  --color-controls-secondary: #26242D;
+  --color-controls-secondaryHover: #2B2932;
+  --color-controls-disabled: #18171C;
+}
+
+body {
+  @apply bg-base-bg text-elements-highEmphasis overflow-x-hidden;
+}
+
+@layer components {
+  .elevated {
+    @apply bg-surface-elevated;
+  }
+
+  .elevated-control {
+    @apply transition bg-surface-elevated hover:bg-surface-elevatedHover;
+  }
+
+  .elevated-border {
+    @apply border border-gray-800;
+  }
+
+  .controls-primary {
+    @apply flex font-semibold transition duration-300 ease-in-out bg-controls-primary text-black hover:bg-controls-primaryHover hover:not-disabled:cursor-pointer hover:not-disabled:scale-105 disabled:bg-controls-disabled disabled:text-elements-disabled;
+  }
+
+  .controls-secondary {
+    @apply flex font-semibold text-center transition duration-300 ease-in-out bg-controls-secondary text-elements-midEmphasis hover:bg-controls-secondaryHover hover:not-disabled:cursor-pointer;
+  }
+}
