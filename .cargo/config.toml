@@ -1,4 +1,11 @@
+[build]
+target = "wasm32-unknown-unknown"
+
 [target.wasm32-unknown-unknown]
 rustflags = [
-    "--cfg=getrandom_backend=\"wasm_js\"",
+    "-C", "link-arg=-s",
 ]
+
+[env]
+# Ensure getrandom uses wasm_js backend for all WASM builds
+CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUSTFLAGS = "-C link-arg=-s"
