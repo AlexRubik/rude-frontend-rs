@@ -11,7 +11,7 @@ echo "Adding WebAssembly target..."
 rustup target add wasm32-unknown-unknown
 
 echo "Installing Dioxus CLI..."
-cargo install dioxus-cli
+cargo install dioxus-cli --version 0.6.3 --locked
 
 echo "Installing Node.js dependencies..."
 npm install
