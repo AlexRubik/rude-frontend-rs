@@ -1,0 +1,17 @@
+[application]
+name = "Solana Web App"
+default_platform = "web"
+out_dir = "dist"
+asset_dir = "public"
+
+[web.app]
+title = "Solana Web App"
+
+[web.watcher]
+reload_html = true
+watch_path = ["src", "public"]
+index_on_404 = true
+
+[web.resource]
+style = ["public/tailwind.css"]
+script = []

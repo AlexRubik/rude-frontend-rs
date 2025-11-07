@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations and styles */
+@layer utilities {
+  .wallet-drawer-fade {
+    animation: fadeIn 300ms ease-in-out;
+  }
+  
+  .wallet-drawer-fade-out {
+    animation: fadeOut 300ms ease-in-out;
+  }
+  
+  .wallet-drawer-slide {
+    animation: slideIn 300ms ease-in-out;
+  }
+  
+  .wallet-drawer-slide-out {
+    animation: slideOut 300ms ease-in-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

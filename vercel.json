@@ -1,0 +1,16 @@
+{
+  "buildCommand": "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && rustup target add wasm32-unknown-unknown && curl -L --proto '=https' --tlsv1.2 -sSf https://dioxuslabs.com/dx-install.sh | sh && npm install && npm run build",
+  "outputDirectory": "dist",
+  "framework": null,
+  "devCommand": null,
+  "installCommand": "npm install",
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
