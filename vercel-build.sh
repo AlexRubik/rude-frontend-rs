@@ -11,7 +11,7 @@ echo "Adding WebAssembly target..."
 rustup target add wasm32-unknown-unknown
 
 echo "Installing Dioxus CLI..."
-curl -L --proto '=https' --tlsv1.2 -sSf https://dioxuslabs.com/dx-install.sh | sh
+cargo install dioxus-cli
 
 echo "Installing Node.js dependencies..."
 npm install
