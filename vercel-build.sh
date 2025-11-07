@@ -9,10 +9,6 @@ export RUSTUP_HOME=/tmp/rustup
 export CARGO_HOME=/tmp/cargo
 export PATH="$CARGO_HOME/bin:$PATH"
 
-# Critical: Set RUSTFLAGS for WASM compilation to avoid getrandom issues
-export CARGO_BUILD_TARGET="wasm32-unknown-unknown"
-export RUSTFLAGS="-C link-arg=-s"
-
 echo "=== Installing Rust toolchain ==="
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain stable
 
@@ -50,10 +46,8 @@ echo "=== Verifying wallet.js was created ==="
 ls -lh public/wallet.js
 
 echo "=== Building Rust application to WebAssembly ==="
-# Set environment to ensure getrandom and other deps use correct WASM features
-export CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUSTFLAGS="-C link-arg=-s"
-
-# Build with explicit release profile
+# Build with explicit release profile and platform
+# The .cargo/config.toml contains WASM-specific rustflags
 dx build --release --platform web
 
 echo "=== Verifying build output ==="
