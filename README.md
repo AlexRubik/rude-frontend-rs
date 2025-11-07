@@ -144,7 +144,7 @@ The `vercel.json` file contains all necessary configuration:
 
 ```json
 {
-  "buildCommand": "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && rustup target add wasm32-unknown-unknown && curl -L --proto '=https' --tlsv1.2 -sSf https://dioxuslabs.com/dx-install.sh | sh && npm install && npm run build",
+  "buildCommand": "bash vercel-build.sh",
   "outputDirectory": "dist",
   "framework": null,
   "devCommand": null,
@@ -153,9 +153,19 @@ The `vercel.json` file contains all necessary configuration:
 ```
 
 **Key Points:**
-- The build command installs Rust, the WASM target, Dioxus CLI, and builds the entire project
+- The build command executes `vercel-build.sh` which handles the complete build process
+- The build script installs Rust, the WASM target, Dioxus CLI, and builds the entire project
 - Output directory is set to `dist`
 - SPA routing is configured to serve `index.html` for all routes
+
+**Build Script (vercel-build.sh):**
+The build logic is extracted to a separate script to comply with Vercel's 256-character
+limit on buildCommand. The script:
+1. Installs Rust toolchain via rustup
+2. Adds wasm32-unknown-unknown target for WebAssembly compilation
+3. Installs Dioxus CLI for building the application
+4. Installs Node.js dependencies
+5. Runs the complete build process
 
 ### Vercel Settings Summary
 
