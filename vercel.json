@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run build:css && cd wallet-adapter && npm run build && cd .. && dx build --release",
+  "outputDirectory": "dist",
+  "installCommand": "npm install && cd wallet-adapter && npm install && cd .. && cargo install dioxus-cli",
+  "framework": null
+}
