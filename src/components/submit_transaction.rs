@@ -24,12 +24,12 @@ pub enum TransactionStatus {
 
 /// Signs and submits a transaction
 pub fn submit_transaction(mut tx: VersionedTransaction) {
+    let gateway = use_gateway();
+    let gateway_clone = gateway.read().clone();
 
     spawn(async move {
         // Set blockhash
-        let gateway = use_gateway();
-
-        if let Ok(hash) = gateway.read().rpc.get_latest_blockhash().await {
+        if let Ok(hash) = gateway_clone.rpc.get_latest_blockhash().await {
             match &mut tx.message {
                 VersionedMessage::V0(message) => {
                     message.recent_blockhash = hash;
@@ -64,7 +64,6 @@ pub fn submit_transaction(mut tx: VersionedTransaction) {
                             // Process valid signing result
                             Ok(serde_json::Value::String(string)) => {
                                 // Decode signed transaction
-                                let gateway = use_gateway();
                                 let decode_res = base64::engine::general_purpose::STANDARD
                                     .decode(string)
                                     .ok();
@@ -74,7 +73,7 @@ pub fn submit_transaction(mut tx: VersionedTransaction) {
 
                                 // Send transaction to rpc
                                 let rpc_res = match decode_res {
-                                    Some(tx) => gateway.read().rpc.send_transaction(&tx).await.ok(),
+                                    Some(tx) => gateway_clone.rpc.send_transaction(&tx).await.ok(),
                                     None => {
                                         log::info!("error decoding tx");
                                         None
@@ -84,7 +83,7 @@ pub fn submit_transaction(mut tx: VersionedTransaction) {
                                 // Confirm transaction
                                 match rpc_res {
                                     Some(sig) => {
-                                        let confirmed = gateway.read().rpc.confirm_signature(sig).await;
+                                        let confirmed = gateway_clone.rpc.confirm_signature(sig).await;
                                         if confirmed.is_ok() {
                                             log::info!("Transaction confirmed: {}", sig);
                                         } else {
