@@ -8,8 +8,7 @@ use solana_sdk::{
 };
 
 use crate::{
-    gateway::{GatewayError, SolanaGateway},
-    hooks::use_gateway,
+    gateway::{GatewayError, SolanaGateway, Gateway, WebRpc, RPC_URL},
 };
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -24,12 +23,12 @@ pub enum TransactionStatus {
 
 /// Signs and submits a transaction
 pub fn submit_transaction(mut tx: VersionedTransaction) {
-    let gateway = use_gateway();
-    let gateway_clone = gateway.read().clone();
-
     spawn(async move {
+        // Create a new gateway instance for this async task
+        let gateway = Gateway::<WebRpc>::new(RPC_URL.to_string());
+        
         // Set blockhash
-        if let Ok(hash) = gateway_clone.rpc.get_latest_blockhash().await {
+        if let Ok(hash) = gateway.rpc.get_latest_blockhash().await {
             match &mut tx.message {
                 VersionedMessage::V0(message) => {
                     message.recent_blockhash = hash;
@@ -73,7 +72,7 @@ pub fn submit_transaction(mut tx: VersionedTransaction) {
 
                                 // Send transaction to rpc
                                 let rpc_res = match decode_res {
-                                    Some(tx) => gateway_clone.rpc.send_transaction(&tx).await.ok(),
+                                    Some(tx) => gateway.rpc.send_transaction(&tx).await.ok(),
                                     None => {
                                         log::info!("error decoding tx");
                                         None
@@ -83,7 +82,7 @@ pub fn submit_transaction(mut tx: VersionedTransaction) {
                                 // Confirm transaction
                                 match rpc_res {
                                     Some(sig) => {
-                                        let confirmed = gateway_clone.rpc.confirm_signature(sig).await;
+                                        let confirmed = gateway.rpc.confirm_signature(sig).await;
                                         if confirmed.is_ok() {
                                             log::info!("Transaction confirmed: {}", sig);
                                         } else {
