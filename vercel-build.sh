@@ -2,8 +2,10 @@
 set -e
 
 echo "Installing Rust toolchain..."
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source $HOME/.cargo/env
+export RUSTUP_HOME=/tmp/rustup
+export CARGO_HOME=/tmp/cargo
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+export PATH="$CARGO_HOME/bin:$PATH"
 
 echo "Adding WebAssembly target..."
 rustup target add wasm32-unknown-unknown
